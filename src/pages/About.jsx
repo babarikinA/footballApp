@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import HeroVisual from '../components/HeroVisual'
 
 const AboutPage = () => (
-  <section className="section">
+  <section className="section" data-testid="about">
     <div className="section-head">
       <h2>О платформе</h2>
       <p className="muted">
@@ -10,11 +10,11 @@ const AboutPage = () => (
       </p>
     </div>
     <div className="about-grid">
-      <div className="card about-card">
+      <div className="card about-card" data-testid="about-why">
         <h3>Зачем это нужно</h3>
         <p className="muted">Быстро собирать состав, видеть кто идёт, и вести статистику без таблиц и чатов.</p>
       </div>
-      <div className="card about-card">
+      <div className="card about-card" data-testid="about-what">
         <h3>Что внутри</h3>
         <ul className="list">
           <li>Поиск и бронирование локальных игр</li>
@@ -23,7 +23,7 @@ const AboutPage = () => (
           <li>Командные рейтинги и сравнения</li>
         </ul>
       </div>
-      <div className="card about-card">
+      <div className="card about-card" data-testid="about-who">
         <h3>Для кого</h3>
         <p className="muted">
           Любители, корпоративные лиги, дворовые команды и все, кто хочет прозрачных цифр по игре.

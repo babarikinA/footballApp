@@ -189,12 +189,12 @@ const AdminPage = ({ onAuth }) => {
 
   if (!user) {
     return (
-      <section className="section">
+      <section className="section" data-testid="admin-login-section">
         <div className="section-head">
           <h2>Личный кабинет</h2>
           <p className="muted">Вход по имени и паролю, указанным при регистрации.</p>
         </div>
-        <form className="card form" onSubmit={handleLogin}>
+        <form className="card form" onSubmit={handleLogin} data-testid="admin-login-form">
           <label>
             <span>Имя</span>
             <input
@@ -203,6 +203,7 @@ const AdminPage = ({ onAuth }) => {
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Иван"
               required
+              data-testid="login-first-name"
             />
           </label>
           <label>
@@ -213,19 +214,20 @@ const AdminPage = ({ onAuth }) => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Ваш пароль"
               required
+              data-testid="login-password"
             />
           </label>
-          <button className="btn primary" type="submit">
+          <button className="btn primary" type="submit" data-testid="login-submit">
             Войти
           </button>
-          {error && <p className="muted" style={{ color: '#c0392b' }}>{error}</p>}
+          {error && <p className="muted" style={{ color: '#c0392b' }} data-testid="login-error">{error}</p>}
         </form>
       </section>
     )
   }
 
   return (
-    <section className="section">
+    <section className="section" data-testid="admin-section">
       <div className="section-head">
         <h2>Привет, {user.firstName}!</h2>
         <p className="muted">
@@ -233,12 +235,13 @@ const AdminPage = ({ onAuth }) => {
         </p>
       </div>
 
-      <div className="tabs">
+      <div className="tabs" data-testid="admin-tabs">
         {isAdmin ? (
           <>
             <button
               className={`btn ${activeTab === 'profile' ? 'primary' : 'ghost'} small`}
               onClick={() => setActiveTab('profile')}
+              data-testid="tab-profile"
             >
               Настройки профиля
             </button>
@@ -248,6 +251,7 @@ const AdminPage = ({ onAuth }) => {
                 setActiveTab('users')
                 setAllUsers(listUsers())
               }}
+              data-testid="tab-users"
             >
               Пользователи
             </button>
@@ -257,6 +261,7 @@ const AdminPage = ({ onAuth }) => {
                 setActiveTab('votes')
                 setVotes(listVotes())
               }}
+              data-testid="tab-votes"
             >
               Голосования
             </button>
@@ -266,6 +271,7 @@ const AdminPage = ({ onAuth }) => {
                 setActiveTab('games')
                 setVotes(listVotes())
               }}
+              data-testid="tab-games"
             >
               Игры
             </button>
@@ -275,12 +281,14 @@ const AdminPage = ({ onAuth }) => {
             <button
               className={`btn ${activeTab === 'overview' ? 'primary' : 'ghost'} small`}
               onClick={() => setActiveTab('overview')}
+              data-testid="tab-overview"
             >
               Обзор
             </button>
             <button
               className={`btn ${activeTab === 'settings' ? 'primary' : 'ghost'} small`}
               onClick={() => setActiveTab('settings')}
+              data-testid="tab-settings"
             >
               Настройки аккаунта
             </button>
@@ -289,7 +297,7 @@ const AdminPage = ({ onAuth }) => {
       </div>
 
       {isAdmin && activeTab === 'profile' && (
-        <div className="card form" style={{ marginTop: '16px' }}>
+        <div className="card form" style={{ marginTop: '16px' }} data-testid="admin-profile-form">
           <h3>Профиль администратора</h3>
           <p className="muted">Добавь аватар администратора (локально).</p>
           <div className="avatar large">
@@ -311,16 +319,17 @@ const AdminPage = ({ onAuth }) => {
                 reader.onload = (ev) => setUploadPreview(ev.target?.result || '')
                 reader.readAsDataURL(file)
               }}
+              data-testid="admin-profile-file"
             />
           </label>
-          <button className="btn primary" onClick={handlePhotoSave} disabled={!uploadPreview}>
+          <button className="btn primary" onClick={handlePhotoSave} disabled={!uploadPreview} data-testid="admin-profile-save">
             Сохранить фото
           </button>
         </div>
       )}
 
       {isAdmin && activeTab === 'users' && (
-        <div className="card table-card" style={{ marginTop: '8px' }}>
+        <div className="card table-card" style={{ marginTop: '8px' }} data-testid="admin-users">
           <div className="table-head">
             <span>Имя</span>
             <span>Фамилия</span>
@@ -329,11 +338,11 @@ const AdminPage = ({ onAuth }) => {
           </div>
           {allUsers.length === 0 && <p className="muted">Пока пусто.</p>}
           {allUsers.map((u) => (
-            <div key={u.id} className="table-row">
+            <div key={u.id} className="table-row" data-testid={`admin-user-${u.id}`}>
               <span>{u.firstName}</span>
               <span>{u.lastName}</span>
               <span>{new Date(u.createdAt).toLocaleString()}</span>
-              <button className="btn ghost small" onClick={() => handleDeleteUser(u.id)}>
+              <button className="btn ghost small" onClick={() => handleDeleteUser(u.id)} data-testid="admin-user-delete">
                 Удалить
               </button>
             </div>
@@ -342,7 +351,12 @@ const AdminPage = ({ onAuth }) => {
       )}
 
       {isAdmin && activeTab === 'votes' && (
-        <form className="card form" style={{ marginTop: '12px' }} onSubmit={handleCreateVote}>
+        <form
+          className="card form"
+          style={{ marginTop: '12px' }}
+          onSubmit={handleCreateVote}
+          data-testid="admin-vote-form"
+        >
             <h3>Новое голосование</h3>
             <label>
               <span>Название</span>
@@ -351,6 +365,7 @@ const AdminPage = ({ onAuth }) => {
                 onChange={(e) => setVoteForm({ ...voteForm, title: e.target.value })}
                 placeholder="Футбольная игра"
                 required
+                data-testid="vote-title"
               />
             </label>
             <label>
@@ -360,6 +375,7 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.date}
                 onChange={(e) => setVoteForm({ ...voteForm, date: e.target.value })}
                 required
+                data-testid="vote-date"
               />
             </label>
             <label>
@@ -370,12 +386,14 @@ const AdminPage = ({ onAuth }) => {
                   value={voteForm.timeStart}
                   onChange={(e) => setVoteForm({ ...voteForm, timeStart: e.target.value })}
                   required
+                  data-testid="vote-time-start"
                 />
                 <input
                   type="time"
                   value={voteForm.timeEnd}
                   onChange={(e) => setVoteForm({ ...voteForm, timeEnd: e.target.value })}
                   required
+                  data-testid="vote-time-end"
                 />
               </div>
             </label>
@@ -385,6 +403,7 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.price}
                 onChange={(e) => setVoteForm({ ...voteForm, price: e.target.value })}
                 placeholder="20 BYN"
+                data-testid="vote-price"
               />
             </label>
             <label>
@@ -393,6 +412,7 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.players}
                 onChange={(e) => setVoteForm({ ...voteForm, players: e.target.value })}
                 placeholder="8x8"
+                data-testid="vote-players"
               />
             </label>
             <label>
@@ -401,6 +421,7 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.prize}
                 onChange={(e) => setVoteForm({ ...voteForm, prize: e.target.value })}
                 placeholder="Мяч/кубок"
+                data-testid="vote-prize"
               />
             </label>
             <label>
@@ -410,6 +431,7 @@ const AdminPage = ({ onAuth }) => {
                 onChange={(e) => setVoteForm({ ...voteForm, location: e.target.value })}
                 placeholder="Манеж, ул. Спортивная 5"
                 required
+                data-testid="vote-location"
               />
             </label>
             <label>
@@ -418,6 +440,7 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.field}
                 onChange={(e) => setVoteForm({ ...voteForm, field: e.target.value })}
                 placeholder="Манеж №2"
+                data-testid="vote-field"
               />
             </label>
             <label>
@@ -426,6 +449,7 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.light}
                 onChange={(e) => setVoteForm({ ...voteForm, light: e.target.value })}
                 placeholder="Есть"
+                data-testid="vote-light"
               />
             </label>
             <label>
@@ -434,17 +458,18 @@ const AdminPage = ({ onAuth }) => {
                 value={voteForm.locker}
                 onChange={(e) => setVoteForm({ ...voteForm, locker: e.target.value })}
                 placeholder="Есть душ"
+                data-testid="vote-locker"
               />
             </label>
-            <button className="btn primary" type="submit">
+            <button className="btn primary" type="submit" data-testid="vote-submit">
               Создать и отправить
             </button>
-            {voteStatus && <p className="muted">{voteStatus}</p>}
+            {voteStatus && <p className="muted" data-testid="vote-status">{voteStatus}</p>}
           </form>
       )}
 
       {isAdmin && activeTab === 'games' && (
-        <div className="card table-card" style={{ marginTop: '8px' }}>
+        <div className="card table-card" style={{ marginTop: '8px' }} data-testid="admin-games">
           <div className="table-head">
             <span>Название</span>
             <span>Дата</span>
@@ -459,13 +484,13 @@ const AdminPage = ({ onAuth }) => {
             const yes = resp.filter((r) => r.decision === 'yes').length
             const no = resp.filter((r) => r.decision === 'no').length
             return (
-              <div key={v.id} className="table-row">
+              <div key={v.id} className="table-row" data-testid={`admin-game-${v.id}`}>
                 <span>{v.title}</span>
                 <span>{v.date}</span>
                 <span>{v.location || '—'}</span>
                 <span>{v.players}</span>
                 <span>{yes}/{no}</span>
-                <button className="btn ghost small" onClick={() => handleDeleteGameAdmin(v.id)}>
+                <button className="btn ghost small" onClick={() => handleDeleteGameAdmin(v.id)} data-testid="admin-game-cancel">
                   Отменить
                 </button>
               </div>
@@ -477,7 +502,7 @@ const AdminPage = ({ onAuth }) => {
       {!isAdmin && activeTab === 'overview' && (
         <>
           {currentVote && (
-            <div className="card" style={{ marginBottom: '16px' }}>
+            <div className="card" style={{ marginBottom: '16px' }} data-testid="user-current-vote">
               <h3>Новое голосование от админа</h3>
               <p className="muted">{currentVote.title}</p>
               <p className="muted">
@@ -495,32 +520,32 @@ const AdminPage = ({ onAuth }) => {
               <p className="muted">Приняли: {yesCount} · Отклонили: {noCount}</p>
               {!hasResponded ? (
                 <div className="cta-inline">
-                  <button className="btn primary" onClick={() => handleUserDecision('yes')}>
+                  <button className="btn primary" onClick={() => handleUserDecision('yes')} data-testid="vote-accept">
                     Принять
                   </button>
-                  <button className="btn ghost" onClick={() => handleUserDecision('no')}>
+                  <button className="btn ghost" onClick={() => handleUserDecision('no')} data-testid="vote-decline">
                     Отклонить
                   </button>
                 </div>
               ) : (
-                <p className="muted">Ответ отправлен. Спасибо!</p>
+                <p className="muted" data-testid="vote-answered">Ответ отправлен. Спасибо!</p>
               )}
             </div>
           )}
 
           {notifications.length > 0 && (
-            <div className="card" style={{ marginBottom: '16px' }}>
+            <div className="card" style={{ marginBottom: '16px' }} data-testid="user-notifications">
               <h3>Уведомления</h3>
               <ul className="muted" style={{ paddingLeft: '18px' }}>
                 {notifications.map((n) => (
-                  <li key={n.id}>{n.message}</li>
+                  <li key={n.id} data-testid={`notification-${n.id}`}>{n.message}</li>
                 ))}
               </ul>
             </div>
           )}
 
           <div className="grid-3">
-            <div className="card profile-card">
+            <div className="card profile-card" data-testid="user-profile-card">
               <div className="avatar">
                 {user.photo ? <img src={user.photo} alt="Аватар" /> : <span>{user.firstName[0]}</span>}
               </div>
@@ -530,19 +555,19 @@ const AdminPage = ({ onAuth }) => {
               <p className="muted">Регистрация: {new Date(user.createdAt).toLocaleDateString()}</p>
             </div>
 
-            <div className="card">
+            <div className="card" data-testid="user-next-games">
               <h3>Следующие матчи</h3>
               <p className="muted">Получай приглашения от админа и подтверждай участие.</p>
             </div>
 
-            <div className="card">
+            <div className="card" data-testid="user-stats-card">
               <h3>Статистика</h3>
               <p className="muted">Матчи: {games.filter((g) => g.status === 'archived').length}</p>
             </div>
           </div>
 
           <h3 style={{ marginTop: '16px' }}>Таблица игр</h3>
-          <div className="card table-card">
+          <div className="card table-card" data-testid="user-games">
             <div className="table-head">
               <span>Организатор</span>
               <span>Дата</span>
@@ -552,7 +577,7 @@ const AdminPage = ({ onAuth }) => {
             </div>
             {games.length === 0 && <p className="muted">Пока нет принятых игр.</p>}
             {games.map((g) => (
-              <div key={g.id} className="table-row">
+              <div key={g.id} className="table-row" data-testid={`user-game-${g.id}`}>
                 <span>{g.organizer}</span>
                 <span>{g.date}</span>
                 <span>{g.location}</span>
@@ -566,7 +591,7 @@ const AdminPage = ({ onAuth }) => {
       )}
 
       {!isAdmin && activeTab === 'settings' && (
-        <div className="card form" style={{ marginTop: '16px' }}>
+        <div className="card form" style={{ marginTop: '16px' }} data-testid="user-settings-form">
           <h3>Настройки аккаунта</h3>
           <p className="muted">Добавь фото профиля. Хранится локально в браузере.</p>
           <div className="avatar large">
@@ -588,15 +613,16 @@ const AdminPage = ({ onAuth }) => {
                 reader.onload = (ev) => setUploadPreview(ev.target?.result || '')
                 reader.readAsDataURL(file)
               }}
+              data-testid="settings-file"
             />
           </label>
-          <button className="btn primary" onClick={handlePhotoSave} disabled={!uploadPreview}>
+          <button className="btn primary" onClick={handlePhotoSave} disabled={!uploadPreview} data-testid="settings-save-photo">
             Сохранить фото
           </button>
 
           <label>
             <span>Позиция</span>
-            <select value={position} onChange={(e) => setPosition(e.target.value)}>
+            <select value={position} onChange={(e) => setPosition(e.target.value)} data-testid="settings-position">
               <option value="">Не выбрано</option>
               <option value="Вратарь">Вратарь</option>
               <option value="Защитник">Защитник</option>
@@ -614,10 +640,11 @@ const AdminPage = ({ onAuth }) => {
               value={age}
               onChange={(e) => setAge(e.target.value)}
               placeholder="Например, 25"
+              data-testid="settings-age"
             />
           </label>
 
-          <button className="btn primary" onClick={handleProfileSave}>
+          <button className="btn primary" onClick={handleProfileSave} data-testid="settings-save-profile">
             Сохранить профиль
           </button>
         </div>

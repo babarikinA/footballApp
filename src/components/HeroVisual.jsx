@@ -1,7 +1,7 @@
 import { stats } from '../data/content'
 
 const HeroVisual = ({ showMetrics = true }) => (
-  <div className="hero-visual" role="presentation">
+  <div className="hero-visual" role="presentation" data-testid="hero-visual">
     <div className="device">
       <div className="device-top">
         <span className="pill" />

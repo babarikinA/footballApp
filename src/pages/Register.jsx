@@ -25,13 +25,13 @@ const RegisterPage = () => {
   }
 
   return (
-    <section className="section">
+    <section className="section" data-testid="register">
       <div className="section-head">
         <h2>Регистрация игрока</h2>
         <p className="muted">Имя, фамилия и пароль сохраняются в локальной базе (localStorage).</p>
       </div>
 
-      <form className="card form" onSubmit={handleSubmit}>
+      <form className="card form" onSubmit={handleSubmit} data-testid="register-form">
         <label>
           <span>Имя</span>
           <input
@@ -40,6 +40,7 @@ const RegisterPage = () => {
             onChange={(e) => setFirstName(e.target.value)}
             placeholder="Иван"
             required
+            data-testid="register-first-name"
           />
         </label>
         <label>
@@ -50,6 +51,7 @@ const RegisterPage = () => {
             onChange={(e) => setLastName(e.target.value)}
             placeholder="Иванов"
             required
+            data-testid="register-last-name"
           />
         </label>
         <label>
@@ -60,12 +62,13 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="не короче 6 символов"
             required
+            data-testid="register-password"
           />
         </label>
-        <button type="submit" className="btn primary">
+        <button type="submit" className="btn primary" data-testid="register-submit">
           Сохранить
         </button>
-        <p className="muted">{status}</p>
+        <p className="muted" data-testid="register-status">{status}</p>
       </form>
     </section>
   )
