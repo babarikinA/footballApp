@@ -1,0 +1,9 @@
+{
+  "appId": "app.footbool",
+  "appName": "Footbool",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
